@@ -704,7 +704,35 @@
         target.classList.add("active");
       }
 
-      document.querySelectorAll("[data-navigate]").forEach((btn) => {
+      document.querySelectorAll(".nav-btn").forEach((btn) => {
+        const navKey = btn.getAttribute("data-nav");
+        const isMatch =
+          navKey === viewName ||
+          (navKey === "portefeuille" && (viewName === "recharge" || viewName === "retrait"));
+        btn.classList.toggle("active", isMatch);
+      });
+    }
+
+    openDrawerBtn.addEventListener("click", openDrawer);
+    closeDrawerBtn.addEventListener("click", closeDrawer);
+    drawerBackdrop.addEventListener("click", closeDrawer);
+
+    togglePartiesBtn.addEventListener("click", () => {
+      const expanded = partiesSubMenu.classList.toggle("open");
+      togglePartiesBtn.setAttribute("aria-expanded", String(expanded));
+      partiesArrow.textContent = expanded ? "⌃" : "⌄";
+    });
+
+    document.querySelectorAll("[data-game]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const game = btn.getAttribute("data-game");
+        document.getElementById("selectedGameTag").textContent = `-- ${game}`;
+        showView("parties");
+        closeDrawer();
+      });
+    });
+
+    document.querySelectorAll("[data-navigate]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const dest = btn.getAttribute("data-navigate");
         showView(dest);
@@ -761,6 +789,28 @@
       closeDrawer();
       alert("Déconnexion effectuée.");
     });
-  </script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCa-_LwdBa5Mg1eDJhqqJLPYPIbLuOeGu8",
+    authDomain: "sanel-games.firebaseapp.com",
+    projectId: "sanel-games",
+    storageBucket: "sanel-games.firebasestorage.app",
+    messagingSenderId: "807536908773",
+    appId: "1:807536908773:web:477894b605763639be370c",
+    measurementId: "G-ZTHEYVE9TK"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
